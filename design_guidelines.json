@@ -1,0 +1,41 @@
+{
+  "project_name": "Indian OTP / Digital-Arrest Scam Call Detection MLOps System",
+  "archetype": "Swiss & High-Contrast (Authority, Clarity, Truth) + Security Command Center",
+  "typography": {
+    "heading_font": "Instrument Serif / Plus Jakarta Sans",
+    "body_font": "Inter / JetBrains Mono",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight font-bold",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-semibold",
+      "h3": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-sm text-slate-300"
+    }
+  },
+  "colors": {
+    "primary": "#EF4444",
+    "primary_hover": "#DC2626",
+    "background": "#090A0F",
+    "surface": "#12141C",
+    "surface_border": "#1E2230",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#94A3B8",
+    "accent_success": "#10B981",
+    "accent_warning": "#F59E0B"
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-[#12141C]/80 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
+    "tracing_beam": "relative rounded-xl p-px overflow-hidden bg-gradient-to-r from-red-500/50 via-amber-500/50 to-emerald-500/50",
+    "card_style": "bg-[#12141C] border border-[#1E2230] rounded-xl p-6 transition-all duration-300 hover:border-red-500/50"
+  },
+  "grids": {
+    "bento_dashboard": "grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6"
+  },
+  "image_urls": [
+    {
+      "category": "security_hero",
+      "url": "https://images.unsplash.com/photo-1614064548237-096f735f344f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHxjeWJlcnNlY3VyaXR5JTIwZGlnaXRhbCUyMHNlY3VyaXR5JTIwbG9jayUyMHNoaWVsZHxlbnwwfHx8fDE3ODcwNzU0NzN8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Padlock on laptop with light trails representing digital arrest and OTP scam protection"
+    }
+  ],
+  "instructions_to_main_agent": "Build a comprehensive full-stack MLOps dashboard and simulation system for Indian OTP and digital-arrest scam detection. Ensure all interactive elements have data-testid attributes, use Sonner for toasts, and provide live simulation, batch analysis, retraining pipeline controls, and multilingual transcript parser supporting English, Hindi, Tamil, Hinglish, and Tanglish."
+}

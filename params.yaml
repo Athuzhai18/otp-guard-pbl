@@ -1,0 +1,56 @@
+# Central DVC/pipeline parameters. Referenced by dvc.yaml + train scripts.
+seed: 42
+
+data:
+  raw_dir: data/raw
+  interim_dir: data/interim
+  processed_dir: data/processed
+  splits_dir: data/splits
+
+split:
+  train_ratio: 0.80
+  validation_ratio: 0.10
+  test_ratio: 0.10
+  group_column: template_group_id
+  stratify_by: [scam_label, scam_category]
+
+deduplication:
+  near_duplicate_threshold: 0.90
+  extra_thresholds: [0.95, 0.98]
+
+baseline:
+  vectorizer:
+    word_ngram_range: [1, 2]
+    char_ngram_range: [3, 5]
+  logistic_regression:
+    C: 1.0
+    class_weight: balanced
+    max_iter: 500
+
+transformer:
+  model_name: bert-base-multilingual-cased
+  max_length: 256
+  learning_rate: 0.00002
+  batch_size: 16
+  epochs: 5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  early_stopping_patience: 2
+  metric_for_best_model: pr_auc
+
+threshold:
+  objective: scam_f1
+  candidates: [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50,
+               0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90]
+
+validation_gates:
+  scam_recall_min: 0.80
+  scam_f1_min: 0.70
+  pr_auc_min: 0.75
+  collapse_min_positive_ratio: 0.01
+  collapse_max_positive_ratio: 0.99
+
+mlflow:
+  tracking_uri: file:./mlruns
+  experiment_name: scam-detector
+  registered_model_name: scam-detector-transformer

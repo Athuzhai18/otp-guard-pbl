@@ -1,0 +1,99 @@
+# -----------------------------------------------------------------------------
+# DVC pipeline definition. Reproduce full data + baseline model with:
+#   dvc repro
+# Individual stages:
+#   dvc repro <stage>
+# -----------------------------------------------------------------------------
+stages:
+  ingest:
+    cmd: python -m src.cli data ingest
+    deps:
+      - src/data/ingest.py
+      - data/raw
+    outs:
+      - data/interim/combined_dataset.csv
+
+  validate:
+    cmd: python -m src.cli data validate
+    deps:
+      - data/interim/combined_dataset.csv
+      - src/data/validate.py
+    outs:
+      - reports/data_quality_report.json:
+          cache: false
+
+  deduplicate:
+    cmd: python -m src.cli data deduplicate
+    deps:
+      - data/interim/combined_dataset.csv
+      - src/data/deduplicate.py
+    params:
+      - deduplication.near_duplicate_threshold
+    outs:
+      - data/processed/deduplicated_dataset.csv
+      - reports/deduplication/exact_duplicates.csv:
+          cache: false
+
+  template_group:
+    cmd: python -m src.cli data group
+    deps:
+      - data/processed/deduplicated_dataset.csv
+      - src/data/template_grouping.py
+    outs:
+      - data/processed/grouped_dataset.csv
+      - reports/deduplication/template_group_report.json:
+          cache: false
+
+  split:
+    cmd: python -m src.cli data split
+    deps:
+      - data/processed/grouped_dataset.csv
+      - src/data/split_dataset.py
+    params:
+      - split.train_ratio
+      - split.validation_ratio
+      - split.test_ratio
+      - seed
+    outs:
+      - data/splits/train.csv
+      - data/splits/validation.csv
+      - data/splits/test.csv
+      - reports/split_report.json:
+          cache: false
+
+  train_baseline:
+    cmd: python -m src.cli model train-baseline
+    deps:
+      - data/splits/train.csv
+      - data/splits/validation.csv
+      - src/models/train_baseline.py
+    params:
+      - baseline
+      - seed
+    outs:
+      - models/baseline/model.pkl
+      - models/baseline/metadata.json:
+          cache: false
+
+  evaluate:
+    cmd: python -m src.cli model evaluate
+    deps:
+      - data/splits/test.csv
+      - models/baseline/model.pkl
+      - src/evaluation/evaluate.py
+    outs:
+      - reports/evaluation/model_comparison.csv:
+          cache: false
+      - reports/evaluation/baseline_metrics.json:
+          cache: false
+
+  validate_model:
+    cmd: python -m src.cli model validate
+    deps:
+      - reports/evaluation/baseline_metrics.json
+      - src/validation/model_validation.py
+    params:
+      - validation_gates
+    outs:
+      - reports/evaluation/validation_gates.json:
+          cache: false
